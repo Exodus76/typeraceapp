@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+std::once_flag flag1;
+
+//std::vector<std::chrono::steady_clock::time_point> t;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -14,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label->setMovie(movie);
     movie->start();
 
-    ui->viewText->setText("Hello is it me you are looking for");
+    ui->viewText->setText("Hello Hello is it me you are looking for");
 }
 
 void MainWindow::on_textEdit_textChanged()
@@ -24,39 +28,50 @@ void MainWindow::on_textEdit_textChanged()
     QTextCursor hc(doc);
     QTextCursor cur(doc);
 
-    cur.atStart();
+//    cur.atStart();
     QTextCharFormat plainFormat(hc.charFormat());
     QTextCharFormat colorFormat = plainFormat;
     colorFormat.setForeground(Qt::red);
 //    bool found = false;
 
     QRegularExpression rx(QString("^%1").arg(ui->textEdit->toPlainText()));
+    QStringList a = ui->viewText->toPlainText().split(" ");
 
-//    while (!hc.isNull() && !hc.atEnd()) {
+
+//        while (!hc.isNull() && !hc.atEnd()) {
+        QRegularExpressionMatch match = rx.match(ui->viewText->toPlainText());
+        if (match.hasMatch()) {
+            std::thread st1([this](){std::call_once(flag1, [this](){start_time = std::chrono::steady_clock::now();});});
+            st1.join();
+        }
+
         hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
-
-        qDebug() << hc.position() << "cursor position";
-        qDebug() << hc.anchor() << "anchor";
-        qDebug() << hc.selectedText();
-        if (hc.position() == 34) {
-            this->close();
+//        qDebug() << hc.position() << "cursor position";
+//        qDebug() << hc.anchor() << "anchor";
+//        qDebug() << hc.selectedText();
+        if (hc.position() == ui->viewText->toPlainText().length() ) {
+            qDebug() << "here";
+            auto duration = std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::now() - start_time);
+            qDebug() << duration.count();
+            wpm(duration.count());
         }
 //        qDebug() << hc.anchor() << "anchor position";
         hc.select(QTextCursor::WordUnderCursor);
         hc.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
         hc.mergeCharFormat(colorFormat);
-
-//    }
-
-
 }
 
+void MainWindow::wpm(int sec) {
+    auto size = ui->viewText->toPlainText().length();
+//    sec = std::chrono::duration_cast<std::chrono::minutes>(sec);
+    qDebug() << int(size/sec);
+    ui->lcdNumber->display(int(size/sec));
+}
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 
 

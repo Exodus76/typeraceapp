@@ -10,6 +10,10 @@
 
 #include <QDebug>
 
+#include <thread>
+#include <mutex>
+#include <chrono>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,14 +24,16 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    void wpm(int sec);
     ~MainWindow();
+    std::chrono::steady_clock::time_point start_time;
 
 private slots:
     void on_textEdit_textChanged();
 
 private:
     Ui::MainWindow *ui;
-    int acount = 0;
+    int acount = 1;
 };
 
 class MyHighlighter : public QSyntaxHighlighter
