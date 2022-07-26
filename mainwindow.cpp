@@ -11,7 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    a = "about above add after again air all almost along also always America an and animal another answer any are around as ask at away back be because been before began begin being below between big book both boy but by call came can car carry change children city close come could country cut day did different do does don't down each earth eat end enough even every example eye face family far father feet few";
+    ui->textEdit->setDisabled(true);
+    ui->viewText->setTextInteractionFlags(Qt::NoTextInteraction); //disable selection
+
+    a = "about above add after again air all almost along also always america an and animal another answer any are around as ask at away back be because been before began begin being below between big book both boy but by call came can car carry change children city close come could country cut day did different do does down each earth eat end";
     //75 w 404 char
 
     ui->viewText->setText(a);
@@ -22,6 +25,7 @@ void MainWindow::on_pushButton_clicked()
 //    qDebug() << start_time;
     timer.start();
     ui->pushButton->setDisabled(true);
+    ui->textEdit->setDisabled(false);
 }
 
 void MainWindow::on_textEdit_textChanged()
@@ -51,14 +55,12 @@ void MainWindow::on_textEdit_textChanged()
 }
 
 void MainWindow::wpm() {
-
     auto duration = timer.elapsed();
     qDebug() << duration; // in milliseconds
     auto cps = a.count()/(duration/100);
 
-    qDebug() << cps * (60/5) << "<-- wpm";
+    qDebug() << cps * (60/4.7) << "<-- wpm";
     ui->lcdNumber->display(int(cps * 12));
-
 }
 
 MainWindow::~MainWindow()

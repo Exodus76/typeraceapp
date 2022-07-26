@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtCore>
 #include <QMovie>
 #include <QLabel>
 #include <QSyntaxHighlighter>
@@ -27,6 +28,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     void wpm();
     ~MainWindow();
+
     QElapsedTimer timer;
     QTime start_time;
     QTime end_time;
@@ -34,8 +36,8 @@ public:
 //    std::chrono::steady_clock::time_point end_time;
 
 private slots:
-    void on_textEdit_textChanged();
 
+    void on_textEdit_textChanged();
     void on_pushButton_clicked();
 
 private:
