@@ -11,6 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#list(PREPEND CMAKE_FIND_LIBRARY_SUFFIXES .a .lib)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
@@ -57,4 +58,9 @@ set_target_properties(Typerace PROPERTIES
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Typerace)
+endif()
+
+get_target_property(MY_TARGET Qt${QT_VERSION_MAJOR}::Core TYPE)
+if(MY_TARGET STREQUAL STATIC_LIBRARY)
+    message("si senor!!")
 endif()
