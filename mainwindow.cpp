@@ -63,7 +63,7 @@ void MainWindow::wpm() {
     qDebug() << cps * (60/4.7) << "<-- wpm";
 //    ui->lcdNumber->display(int(cps * 12));
     ui->label->setDisabled(false);
-    ui->label->setNum(int(cps * 12));
+    ui->label->setNum(int(cps * (60/4.7)));
 }
 
 MainWindow::~MainWindow()
