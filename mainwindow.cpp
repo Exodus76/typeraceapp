@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
-std::once_flag flag1;
+//std::once_flag flag1;
 
 //std::vector<std::chrono::steady_clock::time_point> t;
 
@@ -11,61 +11,54 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QMovie* movie = new QMovie(":/images/berserk.jpg");
-    if(!movie->isValid()) {
-        return;
-    }
-    ui->label->setMovie(movie);
-    movie->start();
+    a = "about above add after again air all almost along also always America an and animal another answer any are around as ask at away back be because been before began begin being below between big book both boy but by call came can car carry change children city close come could country cut day did different do does don't down each earth eat end enough even every example eye face family far father feet few";
+    //75 w 404 char
 
-    ui->viewText->setText("Hello Hello is it me you are looking for");
+    ui->viewText->setText(a);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+//    qDebug() << start_time;
+    timer.start();
+    ui->pushButton->setDisabled(true);
 }
 
 void MainWindow::on_textEdit_textChanged()
 {
+    auto to_type = ui->textEdit->toPlainText();
     QTextDocument *doc = ui->viewText->document();
 
     QTextCursor hc(doc);
-    QTextCursor cur(doc);
 
-//    cur.atStart();
     QTextCharFormat plainFormat(hc.charFormat());
     QTextCharFormat colorFormat = plainFormat;
     colorFormat.setForeground(Qt::red);
-//    bool found = false;
 
-    QRegularExpression rx(QString("^%1").arg(ui->textEdit->toPlainText()));
-    QStringList a = ui->viewText->toPlainText().split(" ");
+    QRegularExpression rx(QString("^%1").arg(to_type));
 
 
-//        while (!hc.isNull() && !hc.atEnd()) {
-        QRegularExpressionMatch match = rx.match(ui->viewText->toPlainText());
-        if (match.hasMatch()) {
-            std::thread st1([this](){std::call_once(flag1, [this](){start_time = std::chrono::steady_clock::now();});});
-            st1.join();
-        }
+    hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
 
-        hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
-//        qDebug() << hc.position() << "cursor position";
-//        qDebug() << hc.anchor() << "anchor";
-//        qDebug() << hc.selectedText();
-        if (hc.position() == ui->viewText->toPlainText().length() ) {
-            qDebug() << "here";
-            auto duration = std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::now() - start_time);
-            qDebug() << duration.count();
-            wpm(duration.count());
-        }
-//        qDebug() << hc.anchor() << "anchor position";
-        hc.select(QTextCursor::WordUnderCursor);
-        hc.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
-        hc.mergeCharFormat(colorFormat);
+    if (hc.position() ==  a.count()) {
+        wpm();
+        qDebug() << "here";
+    }
+
+    hc.select(QTextCursor::WordUnderCursor);
+    hc.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor);
+    hc.mergeCharFormat(colorFormat);
 }
 
-void MainWindow::wpm(int sec) {
-    auto size = ui->viewText->toPlainText().length();
-//    sec = std::chrono::duration_cast<std::chrono::minutes>(sec);
-    qDebug() << int(size/sec);
-    ui->lcdNumber->display(int(size/sec));
+void MainWindow::wpm() {
+
+    auto duration = timer.elapsed();
+    qDebug() << duration; // in milliseconds
+    auto cps = a.count()/(duration/100);
+
+    qDebug() << cps * (60/5) << "<-- wpm";
+    ui->lcdNumber->display(int(cps * 12));
+
 }
 
 MainWindow::~MainWindow()
@@ -115,3 +108,4 @@ if (match.hasMatch()) {
     }
 }
 */
+

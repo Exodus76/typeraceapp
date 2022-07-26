@@ -64,7 +64,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QPushButton" name="pushButton">
         <property name="minimumSize">
          <size>
           <width>150</width>
@@ -78,10 +78,7 @@
          </size>
         </property>
         <property name="text">
-         <string/>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
+         <string>PushButton</string>
         </property>
        </widget>
       </item>

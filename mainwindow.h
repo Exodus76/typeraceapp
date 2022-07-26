@@ -6,10 +6,11 @@
 #include <QLabel>
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
-#include <iostream>
+#include <QElapsedTimer>
 
 #include <QDebug>
 
+#include <iostream>
 #include <thread>
 #include <mutex>
 #include <chrono>
@@ -24,27 +25,34 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    void wpm(int sec);
+    void wpm();
     ~MainWindow();
-    std::chrono::steady_clock::time_point start_time;
+    QElapsedTimer timer;
+    QTime start_time;
+    QTime end_time;
+//    std::chrono::steady_clock::time_point start_time;
+//    std::chrono::steady_clock::time_point end_time;
 
 private slots:
     void on_textEdit_textChanged();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
-    int acount = 1;
+    QString a;
 };
 
-class MyHighlighter : public QSyntaxHighlighter
-{
-public:
-    using QSyntaxHighlighter::QSyntaxHighlighter;
+//fail try
+//class MyHighlighter : public QSyntaxHighlighter
+//{
+//public:
+//    using QSyntaxHighlighter::QSyntaxHighlighter;
 
-    void highlightBlock(const QString &text);
+//    void highlightBlock(const QString &text);
 
-public:
-    int count = 0;
-};
+//public:
+//    int count = 0;
+//};
 
 #endif // MAINWINDOW_H
