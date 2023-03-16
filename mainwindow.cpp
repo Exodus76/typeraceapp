@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::on_pushButton_clicked()
 {
     startTime = std::chrono::high_resolution_clock::now(); //start the chrono time on start
-    timer.start();
+//    timer.start();
     ui->pushButton->setDisabled(true);
     ui->textEdit->setDisabled(false);
 }
