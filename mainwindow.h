@@ -29,11 +29,11 @@ public:
     void wpm();
     ~MainWindow();
 
-    QElapsedTimer timer;
-    QTime start_time;
-    QTime end_time;
-//    std::chrono::steady_clock::time_point start_time;
-//    std::chrono::steady_clock::time_point end_time;
+//    QElapsedTimer timer;
+//    QTime start_time;
+//    QTime end_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+    std::chrono::time_point<std::chrono::high_resolution_clock> endTime;
 
 private slots:
 

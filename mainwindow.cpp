@@ -1,9 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
-//std::once_flag flag1;
-
-//std::vector<std::chrono::steady_clock::time_point> t;
+#include "chrono"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label->setDisabled(true);
     ui->viewText->setTextInteractionFlags(Qt::NoTextInteraction); //disable selection
 
-    a = "about above add after again air all almost along also always america an and animal another answer any are around as ask at away back be because been before began begin being below between big book both boy but by call came can car carry change children city close come could country cut day did different do does down each earth eat end";
+    a = "about above add after again air all almost along also always america an and animal another answer";
     //75 w 404 char
 
     ui->viewText->setText(a);
@@ -23,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::on_pushButton_clicked()
 {
-//    qDebug() << start_time;
+    startTime = std::chrono::high_resolution_clock::now(); //start the chrono time on start
     timer.start();
     ui->pushButton->setDisabled(true);
     ui->textEdit->setDisabled(false);
@@ -45,9 +42,13 @@ void MainWindow::on_textEdit_textChanged()
 
     hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
 
-    if (hc.position() ==  a.count()) {
+    if (hc.position() !=  a.size())
+    {
         wpm();
         qDebug() << "here";
+    } else if (hc.position() == a.size())
+    {
+        ui->textEdit->setDisabled(true);
     }
 
     hc.select(QTextCursor::WordUnderCursor);
@@ -56,12 +57,13 @@ void MainWindow::on_textEdit_textChanged()
 }
 
 void MainWindow::wpm() {
-    auto duration = timer.elapsed();
-    qDebug() << duration; // in milliseconds
-    auto cps = a.count()/(duration/100);
+    endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+    qDebug() << duration << "<-- Time elapsed";
 
+    double cps = static_cast<double>(a.size())/(static_cast<double>(duration)/1000.0);
+    qDebug() << cps;
     qDebug() << cps * (60/4.7) << "<-- wpm";
-//    ui->lcdNumber->display(int(cps * 12));
     ui->label->setDisabled(false);
     ui->label->setNum(int(cps * (60/4.7)));
 }
