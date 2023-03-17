@@ -4,7 +4,8 @@ Typeraceapp is a desktop application built with QT that allows users to test the
 
 ## Usage
 
-To start the typerace, press ``Ctrl + Enter``. You will be presented with a list of random words or text to type. Type the text as quickly and accurately as possible. Once you are finished, your time and wpm will be displayed.
+To start the typerace, press ``Ctrl + Enter``. You will be presented with a list of random words or text to type.
+Once you are finished, your time and wpm will be displayed.
 
 To get a new typerace, simply press ``Ctrl+R`` to reload the application and generate new random words.
 
