@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>830</width>
-    <height>328</height>
+    <width>837</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,6 +22,12 @@
     <height>150</height>
    </size>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::NoContextMenu</enum>
   </property>
@@ -29,13 +35,20 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(31, 31, 31);</string>
+   <string notr="true">background-color: rgb(31, 31, 31);
+color: white;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
     <size>
      <width>0</width>
      <height>0</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -97,8 +110,8 @@ color:white;</string>
        <widget class="QGraphicsView" name="graphicsView">
         <property name="minimumSize">
          <size>
-          <width>150</width>
-          <height>150</height>
+          <width>165</width>
+          <height>165</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -114,7 +127,7 @@ color:white;</string>
         <property name="minimumSize">
          <size>
           <width>150</width>
-          <height>150</height>
+          <height>135</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -167,9 +180,15 @@ color:white;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>830</width>
+     <width>837</width>
      <height>21</height>
     </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>16777215</height>
+    </size>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">

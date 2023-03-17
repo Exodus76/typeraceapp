@@ -31,6 +31,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     void wpm();
+
+    void changeMovie(QString file, QLabel *gif,bool paused);
     QString typeraceString();
 
     ~MainWindow();
@@ -52,9 +54,10 @@ private slots:
 
     void on_actionRestart_triggered();
 
+
 private:
     Ui::MainWindow *ui;
-
+    QTextCursor hc;
     QString a;
 };
 

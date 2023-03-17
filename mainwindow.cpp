@@ -16,16 +16,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene = new QGraphicsScene(this);
     gif_anim = new QLabel();
-    movie = new QMovie(":images//stable_resize.gif");
-    if (!movie->isValid()) {
-        qDebug() << "Error loading GIF: " << movie->lastErrorString();
-    }
+    changeMovie(":images//stable_resize.gif", gif_anim, false);
 
-    gif_anim->setMovie(movie);
-    movie->start();
+//    gif_anim->setMovie(movie);
+//    movie->start();
 
     // Set the size of the QLabel to match the size of the animation
-    // gif_anim->setFixedSize(movie->frameRect().size());
+//     gif_anim->setFixedSize(movie->frameRect().size());
 
     QGraphicsProxyWidget *proxy = scene->addWidget(gif_anim);
     ui->graphicsView->setScene(scene);
@@ -36,14 +33,12 @@ MainWindow::MainWindow(QWidget *parent)
 //function to start the typerace using ctrl+Enter and initialize some variables
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
+    //TODO: only run the control + return event once
     if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Return)
     {
         //change the gif, start the animation, pause it
-        movie = new QMovie(":images//move_resize.gif");
-        qDebug() << movie->frameCount();
-        gif_anim->setMovie(movie);
-        movie->start();
-        movie->setPaused(true);
+//        qDebug() << movie->frameCount();
+        changeMovie(":images//move_resize.gif", gif_anim, true);
 
         //start the chrono time on start
         startTime = std::chrono::high_resolution_clock::now();
@@ -51,21 +46,37 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         //enable and set focus on the textedit to type
         ui->textEdit->setDisabled(false);
         ui->textEdit->setFocus();
+    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_R) {
+
+        //reset the time
+        startTime = std::chrono::high_resolution_clock::now();
+
+        a = typeraceString();
+        ui->viewText->setText(a);
+
+        //move the cursor to the beginning
+        //change textedit and reset it too
+        hc.setPosition(0);
+        ui->textEdit->setDisabled(true);
+        ui->textEdit->clear();
+//        ui->textEdit->setFocus();
+
+        //reset label
+        ui->label->clear();
     }
 }
 
 //handles the text changes on textEdit
 void MainWindow::on_textEdit_textChanged()
 {
+    // get the text being typed
     auto beingTyped = ui->textEdit->toPlainText();
-    //    ui->textEdit->keyPressEvent()
 
     QTextStream splita(&a);
 
-
     QTextDocument *doc = ui->viewText->document();
 
-    QTextCursor hc(doc);
+//    QTextCursor hc(doc);
 
     QTextCharFormat plainFormat(hc.charFormat());
     QTextCharFormat colorFormat = plainFormat;
@@ -78,11 +89,13 @@ void MainWindow::on_textEdit_textChanged()
 
     //when the text is changed in the textEdit jump to the next frame of the movie and update
     //the words per minute
+
     movie->jumpToNextFrame();
     wpm();
 
     if (hc.position() == a.size())
     {
+        changeMovie(":images//stable_resize.gif", gif_anim, false);
         ui->textEdit->setDisabled(true);
     }
 
@@ -133,18 +146,42 @@ QString MainWindow::typeraceString() {
 
 }
 
-
-MainWindow::~MainWindow()
+void MainWindow::changeMovie(QString file, QLabel *gif,bool paused)
 {
-    delete ui;
+    movie = new QMovie(file);
+    if (!movie->isValid()) {
+        qDebug() << "Error loading GIF: " << movie->lastErrorString();
+    }
+    gif->setMovie(movie);
+    movie->start();
+    movie->setPaused(paused);
 }
 
 
 void MainWindow::on_actionRestart_triggered()
 {
+    //set the new word list
+    a = typeraceString();
+    ui->viewText->setText(a);
 
+    //move the cursor to the beginning
+    //change textedit and reset it too
+    hc.setPosition(0);
+    ui->textEdit->setDisabled(false);
+    ui->textEdit->clear();
+    ui->textEdit->setFocus();
+
+    //reset label
+    ui->label->clear();
+
+//    qApp->quit();
+//    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
 
 
 
