@@ -27,6 +27,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     void wpm();
+    QString typeraceString();
+
     ~MainWindow();
 
 //    QElapsedTimer timer;
@@ -39,6 +41,7 @@ private slots:
 
     void on_textEdit_textChanged();
     void on_pushButton_clicked();
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     Ui::MainWindow *ui;

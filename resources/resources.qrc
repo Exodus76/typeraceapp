@@ -3,5 +3,6 @@
         <file>images/stable.gif</file>
         <file>images/berserk.jpg</file>
         <file>images/move.gif</file>
+        <file>words.txt</file>
     </qresource>
 </RCC>

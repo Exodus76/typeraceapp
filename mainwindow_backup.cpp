@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "chrono"
-#include <sstream>
-#include <QFile>
-#include <QRandomGenerator>
-#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,10 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label->setDisabled(true);
     ui->viewText->setTextInteractionFlags(Qt::NoTextInteraction); //disable selection
 
-    a = typeraceString();
-    //    qDebug << a.toLatin1();
-
-    //    a = "about above add after again air all almost along also always america an and animal another answer";
+    a = "about above add after again air all almost along also always america an and animal another answer";
     //75 w 404 char
 
     ui->viewText->setText(a);
@@ -28,30 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::on_pushButton_clicked()
 {
     startTime = std::chrono::high_resolution_clock::now(); //start the chrono time on start
+//    timer.start();
     ui->pushButton->setDisabled(true);
     ui->textEdit->setDisabled(false);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-    if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Return)
-    {
-        qDebug() << "Ctr+Enter pressed";
-        on_pushButton_clicked(); //start the typerace
-        ui->textEdit->setFocus(); //set focus on the textedit to type
-    }
-}
-
 void MainWindow::on_textEdit_textChanged()
 {
-    auto beingTyped = ui->textEdit->toPlainText();
-    //    ui->textEdit->keyPressEvent()
-
-    qDebug() << beingTyped;
-
-    QTextStream splita(&a);
-
-
+    auto to_type = ui->textEdit->toPlainText();
     QTextDocument *doc = ui->viewText->document();
 
     QTextCursor hc(doc);
@@ -60,9 +37,9 @@ void MainWindow::on_textEdit_textChanged()
     QTextCharFormat colorFormat = plainFormat;
     colorFormat.setForeground(Qt::red);
 
-    QRegularExpression rx(QString("^%1").arg(beingTyped));
+    QRegularExpression rx(QString("^%1").arg(to_type));
 
-    //hc keeps track of where we are in the viewText.
+
     hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
 
     if (hc.position() !=  a.size())
@@ -90,38 +67,6 @@ void MainWindow::wpm() {
     ui->label->setDisabled(false);
     ui->label->setNum(int(cps * (60/4.7)));
 }
-
-QString MainWindow::typeraceString() {
-
-    QFile File("words.txt");
-
-    if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-        return QString();
-
-    QStringList words;
-    QTextStream in(&File);
-    while (!in.atEnd()) {
-        //reads everything line by line
-        //trimming to remove any unwanted whitespace
-        QString line = in.readLine().trimmed();
-        if (!line.isEmpty())
-            words.append(line);
-    }
-
-    QString randomWords;
-
-    int count = qMin(words.size(), 20);
-    QRandomGenerator rand(QRandomGenerator::global()->generate());
-    for (int i = 0; i < count; i++) {
-        int index = rand.bounded(words.size());
-        randomWords.append(words.takeAt(index));
-        if (!(i+1 == count))randomWords.append(" ");
-    }
-
-    return randomWords;
-
-}
-
 
 MainWindow::~MainWindow()
 {
@@ -170,3 +115,4 @@ if (match.hasMatch()) {
     }
 }
 */
+
