@@ -4,5 +4,7 @@
         <file>images/berserk.jpg</file>
         <file>images/move.gif</file>
         <file>words.txt</file>
+        <file>images/move_resize.gif</file>
+        <file>images/stable_resize.gif</file>
     </qresource>
 </RCC>

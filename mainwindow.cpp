@@ -1,10 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "chrono"
-#include <sstream>
-#include <QFile>
-#include <QRandomGenerator>
-#include <QStringList>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,37 +13,52 @@ MainWindow::MainWindow(QWidget *parent)
     ui->viewText->setTextInteractionFlags(Qt::NoTextInteraction); //disable selection
 
     a = typeraceString();
-    //    qDebug << a.toLatin1();
 
-    //    a = "about above add after again air all almost along also always america an and animal another answer";
-    //75 w 404 char
+    scene = new QGraphicsScene(this);
+    gif_anim = new QLabel();
+    movie = new QMovie(":images//stable_resize.gif");
+    if (!movie->isValid()) {
+        qDebug() << "Error loading GIF: " << movie->lastErrorString();
+    }
+
+    gif_anim->setMovie(movie);
+    movie->start();
+
+    // Set the size of the QLabel to match the size of the animation
+    // gif_anim->setFixedSize(movie->frameRect().size());
+
+    QGraphicsProxyWidget *proxy = scene->addWidget(gif_anim);
+    ui->graphicsView->setScene(scene);
 
     ui->viewText->setText(a);
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    startTime = std::chrono::high_resolution_clock::now(); //start the chrono time on start
-    ui->pushButton->setDisabled(true);
-    ui->textEdit->setDisabled(false);
-}
-
+//function to start the typerace using ctrl+Enter and initialize some variables
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Return)
     {
-        qDebug() << "Ctr+Enter pressed";
-        on_pushButton_clicked(); //start the typerace
-        ui->textEdit->setFocus(); //set focus on the textedit to type
+        //change the gif, start the animation, pause it
+        movie = new QMovie(":images//move_resize.gif");
+        qDebug() << movie->frameCount();
+        gif_anim->setMovie(movie);
+        movie->start();
+        movie->setPaused(true);
+
+        //start the chrono time on start
+        startTime = std::chrono::high_resolution_clock::now();
+
+        //enable and set focus on the textedit to type
+        ui->textEdit->setDisabled(false);
+        ui->textEdit->setFocus();
     }
 }
 
+//handles the text changes on textEdit
 void MainWindow::on_textEdit_textChanged()
 {
     auto beingTyped = ui->textEdit->toPlainText();
     //    ui->textEdit->keyPressEvent()
-
-    qDebug() << beingTyped;
 
     QTextStream splita(&a);
 
@@ -65,11 +76,12 @@ void MainWindow::on_textEdit_textChanged()
     //hc keeps track of where we are in the viewText.
     hc = doc->find(rx, hc, {QTextDocument::FindCaseSensitively, QTextDocument::FindWholeWords});
 
-    if (hc.position() !=  a.size())
-    {
-        wpm();
-        qDebug() << "here";
-    } else if (hc.position() == a.size())
+    //when the text is changed in the textEdit jump to the next frame of the movie and update
+    //the words per minute
+    movie->jumpToNextFrame();
+    wpm();
+
+    if (hc.position() == a.size())
     {
         ui->textEdit->setDisabled(true);
     }
@@ -80,13 +92,12 @@ void MainWindow::on_textEdit_textChanged()
 }
 
 void MainWindow::wpm() {
+
     endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-    qDebug() << duration << "<-- Time elapsed";
 
     double cps = static_cast<double>(a.size())/(static_cast<double>(duration)/1000.0);
-    qDebug() << cps;
-    qDebug() << cps * (60/4.7) << "<-- wpm";
+
     ui->label->setDisabled(false);
     ui->label->setNum(int(cps * (60/4.7)));
 }
@@ -127,6 +138,13 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+void MainWindow::on_actionRestart_triggered()
+{
+
+}
+
 
 
 

@@ -8,8 +8,12 @@
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
 #include <QElapsedTimer>
-
+#include <sstream>
+#include <QFile>
+#include <QRandomGenerator>
+#include <QStringList>
 #include <QDebug>
+#include <QGraphicsScene>
 
 #include <iostream>
 #include <thread>
@@ -31,6 +35,10 @@ public:
 
     ~MainWindow();
 
+    QGraphicsScene *scene;
+    QLabel *gif_anim;
+    QMovie *movie;
+
 //    QElapsedTimer timer;
 //    QTime start_time;
 //    QTime end_time;
@@ -40,11 +48,13 @@ public:
 private slots:
 
     void on_textEdit_textChanged();
-    void on_pushButton_clicked();
     void keyPressEvent(QKeyEvent *event);
+
+    void on_actionRestart_triggered();
 
 private:
     Ui::MainWindow *ui;
+
     QString a;
 };
 

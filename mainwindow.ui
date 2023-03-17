@@ -29,7 +29,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">background-color: rgb(31, 31, 31);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
@@ -45,17 +45,22 @@
     <item row="1" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <item>
          <widget class="QTextEdit" name="viewText">
           <property name="minimumSize">
            <size>
             <width>650</width>
-            <height>200</height>
+            <height>150</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">font-size: 20px</string>
+           <string notr="true">font: 20px &quot;comic sans ms&quot;;
+background-color: rgb(49, 49, 49);
+color: white;</string>
           </property>
           <property name="readOnly">
            <bool>true</bool>
@@ -67,11 +72,12 @@
           <property name="minimumSize">
            <size>
             <width>650</width>
-            <height>100</height>
+            <height>150</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">font-size: 20px;</string>
+           <string notr="true">font: 15pt &quot;comic sans ms&quot;;
+color:white;</string>
           </property>
           <property name="placeholderText">
            <string>press start and type</string>
@@ -88,7 +94,7 @@
        <number>6</number>
       </property>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QGraphicsView" name="graphicsView">
         <property name="minimumSize">
          <size>
           <width>150</width>
@@ -97,12 +103,9 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
-          <height>150</height>
+          <width>16777215</width>
+          <height>16777215</height>
          </size>
-        </property>
-        <property name="text">
-         <string>START!</string>
         </property>
        </widget>
       </item>
@@ -114,12 +117,23 @@
           <height>150</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
-          <family>Cascadia Code SemiBold</family>
-          <pointsize>22</pointsize>
-          <bold>true</bold>
+          <family>EPSON 太角ゴシック体Ｂ</family>
+          <pointsize>20</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 20pt &quot;EPSON 太角ゴシック体Ｂ&quot;;
+color:white;</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
@@ -148,6 +162,28 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>830</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionRestart"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionRestart">
+   <property name="text">
+    <string>Restart</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
