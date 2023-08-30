@@ -15,7 +15,7 @@ To get a new typerace, simply press ``Ctrl+R`` to reload the application and gen
 
 ## Installation
 
-To install Typeraceapp, download the releaze 7z and just start the typerace.exe.
+To install Typeraceapp, download the releaze 7z and just start with typerace.exe.
 
 ## Contributing
 
